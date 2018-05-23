@@ -69,7 +69,7 @@ d3.json(origUrl, (error, response) => {
         .call(leftAxis);
 
 
-
+    // Grab reformated data from bubble route
     let url = '/bubble-data';
 
     d3.json(url, (error, honeyData) => {
