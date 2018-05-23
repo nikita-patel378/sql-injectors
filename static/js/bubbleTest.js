@@ -96,6 +96,10 @@ d3.json(origUrl, (error, response) => {
             .call(position)
             .sort(order);
 
+        // Add a title to each circle/ work on tooltip later
+        $circleGroup.append('title')
+            .text(data => data.state);
+
         // Interpolates the dataset for the given (fractional) year.
         function insertData(year) {
             return honeyData.map(function (d) {
@@ -135,15 +139,15 @@ d3.json(origUrl, (error, response) => {
                 // console.log(pair);
 
                 if (pair[0] === year) {
-                    // console.log(pair[1]);
-                    dataArray.push(pair[1])
+                    console.log(pair[1]);
+                    dataArray.push(pair[1]);
                 }
                 // else {
                 //     dataArray.push(0)
                 // }
             }
 
-            console.log(dataArray);
+            // console.log(dataArray);
 
             return dataArray;
             // let i = bisect.left(values, year);
