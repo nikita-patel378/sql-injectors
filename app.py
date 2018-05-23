@@ -9,6 +9,16 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/particles")
+def particles():
+
+    particles = pd.read_json("particles.json")
+
+    print(type(particles))
+
+    return jsonify(particles.to_dict(orient="records"))
+
+
 @app.route("/data")
 def data():
 
