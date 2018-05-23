@@ -31,13 +31,13 @@ let origUrl = '/data';
 d3.json(origUrl, (error, response) => {
     if (error) throw (error);
 
-    console.log(response);
+    // console.log(response);
 
     let xTestExtent = d3.extent(response, data => data.totalprod),
         yTestExtent = d3.extent(response, data => data.priceperlb),
         rExtent = d3.extent(response, data => data.numcol);
 
-    console.log(rExtent);
+    // console.log(rExtent);
 
     // Create scale functions
     let xLinearScale = d3.scaleLinear()
@@ -129,7 +129,6 @@ d3.json(origUrl, (error, response) => {
 
             for (let i = 0, ii = values.length; i < ii; i++) {
                 // console.log(values);
-
 
                 let pair = values[i];
 
