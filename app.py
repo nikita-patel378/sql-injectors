@@ -1,12 +1,15 @@
 from flask import Flask, render_template, jsonify
+from flask_pymongo import PyMongo
 import pandas as pd
 
 app = Flask(__name__)
 
+mongo = PyMongo(app)
+
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("bubble.html")
 
 
 @app.route("/particles")
