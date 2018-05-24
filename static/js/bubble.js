@@ -33,7 +33,7 @@ Plotly.d3.json(url, function (error, data) {
     for (let i = 0, ii = data.length; i < ii; i++) {
         let datum = data[i];
         let trace = getData(datum.year, datum.state);
-        trace.text.push(datum.state);
+        trace.text.push(`State: ${datum.state}<br>Total Production: ${datum.totalprod} lbs<br>Price per Pound: $${datum.priceperlb}<br>Number of Colonies: ${datum.numcol}`);
         trace.id.push(datum.state);
         trace.x.push(datum.totalprod);
         trace.y.push(datum.priceperlb);
@@ -53,7 +53,7 @@ Plotly.d3.json(url, function (error, data) {
 
     for (let i = 0, ii = states.length; i < ii; i++) {
         let data = firstYear[states[i]];
-        // One small note. We're creating a single trace here, to which
+        // We're creating a single trace here, to which
         // the frames will pass data for the different years. It's
         // subtle, but to avoid data reference problems, we'll slice
         // the arrays to ensure we never write any new data into our
@@ -114,10 +114,9 @@ Plotly.d3.json(url, function (error, data) {
             // type: 'log'
         },
         yaxis: {
-            title: 'Price per Pound ($/lb)',
-            range: [-0.5, 5]
+            title: 'Price per Pound ($)',
+            range: [-0.5, 4.5]
         },
-        height: 650,
         hovermode: 'closest',
         // We'll use updatemenus (whose functionality includes menus as
         // well as buttons) to create a play button and a pause button.
@@ -140,8 +139,8 @@ Plotly.d3.json(url, function (error, data) {
                 args: [null, {
                     mode: 'immediate',
                     fromcurrent: true,
-                    transition: { duration: 300 },
-                    frame: { duration: 1200, redraw: false }
+                    transition: { duration: 1000 },
+                    frame: { duration: 1000, redraw: false }
                 }],
                 label: 'Play'
             }, {
@@ -162,14 +161,24 @@ Plotly.d3.json(url, function (error, data) {
                 visible: true,
                 prefix: 'Year:',
                 xanchor: 'right',
-                font: { size: 20, color: '#666' }
+                font: { size: 20, color: 'black' }
             },
             steps: sliderSteps
-        }]
+        }],
+        height: 650,
+        margin: {
+            r: 120,
+            t: 100
+        },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: {
+            color: 'black'
+        }
     };
 
     // Create the plot:
-    Plotly.plot('bubble-plotly', {
+    Plotly.plot('bubble-plot', {
         data: traces,
         layout: layout,
         frames: frames,
