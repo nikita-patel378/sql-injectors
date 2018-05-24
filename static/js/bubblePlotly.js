@@ -5,7 +5,7 @@ Plotly.d3.json(url, function (error, data) {
     // first by year, then by state:
     if (error) throw error;
 
-    console.log(data);
+    // console.log(data);
 
     let lookup = {};
 
@@ -42,6 +42,7 @@ Plotly.d3.json(url, function (error, data) {
 
     // Get the group names:
     let years = Object.keys(lookup);
+
     // In this case, every year includes every state, so we
     // can just infer the states from the *first* year:
     let firstYear = lookup[years[0]];
@@ -49,7 +50,8 @@ Plotly.d3.json(url, function (error, data) {
 
     // Create the main traces, one for each state:
     let traces = [];
-    for (i = 0; i < states.length; i++) {
+
+    for (let i = 0, ii = states.length; i < ii; i++) {
         let data = firstYear[states[i]];
         // One small note. We're creating a single trace here, to which
         // the frames will pass data for the different years. It's
@@ -67,6 +69,7 @@ Plotly.d3.json(url, function (error, data) {
                 size: data.marker.size.slice(),
                 sizemode: 'area',
                 sizeref: 50
+                // Recommended calculation: sizeref = 2. * max(array of size values) / (desired maximum marker size ** 2)
             }
         });
     }
@@ -76,7 +79,8 @@ Plotly.d3.json(url, function (error, data) {
     // definition (for example, appearance). The frames just need
     // the parts the traces that change (here, the data).
     let frames = [];
-    for (i = 0; i < years.length; i++) {
+
+    for (let i = 0, ii = years.length; i < ii; i++) {
         frames.push({
             name: years[i],
             data: states.map(function (state) {
@@ -90,7 +94,8 @@ Plotly.d3.json(url, function (error, data) {
     // In this example, we'll animate to one of the named frames
     // created in the above loop.
     let sliderSteps = [];
-    for (i = 0; i < years.length; i++) {
+
+    for (i = 0, ii = years.length; i < ii; i++) {
         sliderSteps.push({
             method: 'animate',
             label: years[i],
@@ -112,7 +117,7 @@ Plotly.d3.json(url, function (error, data) {
             title: 'Price per Pound ($/lb)',
             range: [-0.5, 5]
         },
-        height: 600,
+        height: 650,
         hovermode: 'closest',
         // We'll use updatemenus (whose functionality includes menus as
         // well as buttons) to create a play button and a pause button.
@@ -136,7 +141,7 @@ Plotly.d3.json(url, function (error, data) {
                     mode: 'immediate',
                     fromcurrent: true,
                     transition: { duration: 300 },
-                    frame: { duration: 500, redraw: false }
+                    frame: { duration: 1200, redraw: false }
                 }],
                 label: 'Play'
             }, {
