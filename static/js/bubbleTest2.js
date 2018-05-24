@@ -64,10 +64,12 @@ let label = svg.append("text")
     .text(1998);
 
 // Load the data.
-// let url = "https://raw.githubusercontent.com/RobertLowe/nvd3/master/examples/nations.json";
+// let url = "https://raw.githubusercontent.com/RobertLowe/nvd3/master/examples/honeyData.json";
 let url = "/bubble-data";
 
-d3.json(url, function (nations) {
+d3.json(url, function (honeyData) {
+
+    console.log(honeyData);
 
     // A bisector since many nation's data is sparsely-defined.
     let bisect = d3.bisector(function (d) { return d[0]; });
@@ -162,7 +164,7 @@ d3.json(url, function (nations) {
 
     // Interpolates the dataset for the given (fractional) year.
     function interpolateData(year) {
-        return nations.map(function (d) {
+        return honeyData.map(function (d) {
             return {
                 name: d.state,
                 region: d.state,
