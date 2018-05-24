@@ -139,7 +139,7 @@ d3.json(origUrl, (error, response) => {
                 // console.log(pair);
 
                 if (pair[0] === year) {
-                    console.log(pair[1]);
+                    // console.log(pair[1]);
                     dataArray.push(pair[1]);
                 }
                 // else {
@@ -147,7 +147,7 @@ d3.json(origUrl, (error, response) => {
                 // }
             }
 
-            // console.log(dataArray);
+            console.log(dataArray);
 
             return dataArray;
             // let i = bisect.left(values, year);
