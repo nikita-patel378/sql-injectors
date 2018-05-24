@@ -12,6 +12,49 @@
       crossorigin="anonymous">
     <!-- External styles -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bubbles.css') }}">
+
+    <style>
+      @import url("../static/css/bubbles.css");
+
+      #chart {
+        margin-left: -40px;
+        height: 506px;
+      }
+
+      text {
+        font: 10px sans-serif;
+      }
+
+      .dot {
+        stroke: #000;
+      }
+
+      .axis path,
+      .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+
+      .label {
+        fill: #777;
+      }
+
+      .year.label {
+        font: 500 196px "Helvetica Neue";
+        fill: #ddd;
+      }
+
+      .year.label.active {
+        fill: #aaa;
+      }
+
+      .overlay {
+        fill: none;
+        pointer-events: all;
+        cursor: ew-resize;
+      }
+    </style>
   </head>
 
   <body>
@@ -37,10 +80,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js " integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa "
       crossorigin="anonymous "></script>
     <!-- D3.js and tooltip-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script> -->
     <!-- External JavaScript -->
-    <script src="{{ url_for('static', filename='js/bubbleTest.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bubbleTest2.js') }}"></script>
   </body>
 
 </html>
