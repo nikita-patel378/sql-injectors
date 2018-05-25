@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("map.html")
 
 
 @app.route("/particles")
@@ -22,9 +22,31 @@ def particles():
 @app.route("/data")
 def data():
 
-    df = pd.read_csv("data/raw_data/honeyproduction.csv", encoding='utf-8')
+    df = pd.read_csv("data/raw-data/honeyproduction.csv", encoding='utf-8')
 
     return jsonify(df.to_dict(orient="records"))
+
+
+@app.route("/map-data")
+def map_data():
+
+    df = pd.read_csv("data/raw_data/honeyproduction_withlatlon.csv", encoding='utf-8')
+    data = []
+    for i, row in df.iterrows():
+        data.append({
+            'state': row["state"], 
+            'totalprod': row["totalprod"],
+            'year': row["year"],
+            'latitude': row["latitude"],
+            'longitude': row["longitude"],
+            'state_yr': row["state_yr"]
+        })
+
+    return jsonify(data)
+
+
+
+
 
 
 @app.route("/bubble-data")
