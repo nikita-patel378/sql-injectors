@@ -9,7 +9,7 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def home():
-    return render_template("map.html")
+    return render_template("bubble.html")
 
 
 @app.route("/particles")
@@ -25,7 +25,7 @@ def particles():
 @app.route("/data")
 def data():
 
-    df = pd.read_csv("data/raw-data/honeyproduction.csv", encoding='utf-8')
+    df = pd.read_csv("data/raw_data/honeyproduction.csv", encoding='utf-8')
 
     return jsonify(df.to_dict(orient="records"))
 
@@ -37,7 +37,7 @@ def map_data():
     data = []
     for i, row in df.iterrows():
         data.append({
-            'state': row["state"], 
+            'state': row["state"],
             'totalprod': row["totalprod"],
             'year': row["year"],
             'latitude': row["latitude"],

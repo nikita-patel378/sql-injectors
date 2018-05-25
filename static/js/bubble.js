@@ -184,4 +184,44 @@ Plotly.d3.json(url, function (error, data) {
         layout: layout,
         frames: frames,
     });
-});
+
+
+
+
+    // toggleXAxis();
+})
+
+function toggleXAxis() {
+    let $bubblePlot = Plotly.d3.select('#bubble-plot');
+
+    let logClass = $bubblePlot.classed('log-x-axis');
+
+    if (logClass) {
+        let update = {
+            xaxis: {
+                title: 'Total Production (lbs)',
+                range: [-2000000, 50000000]
+            }
+        }
+
+        Plotly.relayout('bubble-plot', update);
+
+        $bubblePlot
+            .classed('log-x-axis', false)
+            .classed('x-axis', true);
+    }
+    else {
+        let update = {
+            xaxis: {
+                title: 'Total Production (lbs)',
+                type: 'log'
+            }
+        }
+
+        Plotly.relayout('bubble-plot', update);
+
+        $bubblePlot
+            .classed('x-axis', false)
+            .classed('log-x-axis', true);
+    }
+}
