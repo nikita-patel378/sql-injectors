@@ -110,8 +110,8 @@ Plotly.d3.json(url, function (error, data) {
     let layout = {
         xaxis: {
             title: 'Total Production (lbs)',
-            range: [-2000000, 50000000]
-            // type: 'log'
+            // range: [-2000000, 50000000]
+            type: 'log'
         },
         yaxis: {
             title: 'Price per Pound ($)',
@@ -133,7 +133,7 @@ Plotly.d3.json(url, function (error, data) {
             showactive: false,
             direction: 'left',
             type: 'buttons',
-            pad: { t: 87, r: 10 },
+            pad: { t: 115, r: 10 },
             buttons: [{
                 method: 'animate',
                 args: [null, {
@@ -161,7 +161,7 @@ Plotly.d3.json(url, function (error, data) {
                 visible: true,
                 prefix: 'Year:',
                 xanchor: 'right',
-                font: { size: 20, color: 'black' }
+                font: { size: 50, color: 'black' }
             },
             steps: sliderSteps
         }],
@@ -173,6 +173,7 @@ Plotly.d3.json(url, function (error, data) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         font: {
+            family: 'Oswald',
             color: 'black'
         }
     };
