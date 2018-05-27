@@ -33,11 +33,11 @@ Plotly.d3.json(url, function (error, data) {
     for (let i = 0, ii = data.length; i < ii; i++) {
         let datum = data[i];
         let trace = getData(datum.year, datum.state);
-        trace.text.push(`State: ${datum.state_name}<br>Total Production: ${datum.totalprod} lbs<br>Price per Pound: $${datum.priceperlb}<br>Number of Colonies: ${datum.numcol}`);
+        trace.text.push(`State: ${datum.state_name}<br>Number of Colonies: ${datum.numcol}<br>Price per Pound: $${datum.priceperlb}<br>Total Production: ${datum.totalprod} lbs`);
         trace.id.push(datum.state);
-        trace.x.push(datum.totalprod);
+        trace.x.push(datum.numcol);
         trace.y.push(datum.priceperlb);
-        trace.marker.size.push(datum.numcol);
+        trace.marker.size.push(datum.totalprod);
     }
 
     // Get the group names:
@@ -68,7 +68,7 @@ Plotly.d3.json(url, function (error, data) {
             marker: {
                 size: data.marker.size.slice(),
                 sizemode: 'area',
-                sizeref: 80
+                sizeref: 5000
                 // Recommended calculation: sizeref = 2 * Plotly.d3.max(array of size values) / (desired maximum marker size ** 2)
             }
         });
@@ -109,13 +109,13 @@ Plotly.d3.json(url, function (error, data) {
 
     let layout = {
         xaxis: {
-            title: 'Total Production (lbs)',
-            range: [-2000000, 50000000]
+            title: 'Number of Colonies',
+            range: [-20000, 570000]
             // type: 'log'
         },
         yaxis: {
             title: 'Price per Pound ($)',
-            range: [-2, 8.5]
+            range: [-1.5, 8.5]
         },
         hovermode: 'closest',
         // We'll use updatemenus (whose functionality includes menus as
@@ -205,7 +205,7 @@ function toggleXAxis() {
         let update = {
             xaxis: {
                 title: 'Total Production (lbs)',
-                range: [-2000000, 50000000]
+                range: [-20000, 550000]
             }
         }
 
@@ -218,7 +218,7 @@ function toggleXAxis() {
     else {
         let update = {
             xaxis: {
-                title: 'Total Production (lbs)',
+                title: 'Number of Colonies',
                 type: 'log'
             }
         }
@@ -243,7 +243,7 @@ function toggleTest() {
         Plotly.animate('bubble-plot', {
             layout: {
                 xaxis: {
-                    range: [-2000000, 50000000],
+                    range: [-20000, 50000000],
                     type: 'linear'
                 },
             }
@@ -262,7 +262,7 @@ function toggleTest() {
     else {
         let update = {
             xaxis: {
-                title: 'Total Production (lbs)',
+                title: 'Number of Colonies',
                 type: 'log'
             }
         }
