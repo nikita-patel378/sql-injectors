@@ -1,4 +1,4 @@
-let url = '/all-data'
+let url = '/honey-pest'
 
 Plotly.d3.json(url, function (error, data) {
     // Create a lookup table to sort and regroup the columns of data,
@@ -68,7 +68,7 @@ Plotly.d3.json(url, function (error, data) {
             marker: {
                 size: data.marker.size.slice(),
                 sizemode: 'area',
-                sizeref: 50
+                sizeref: 60
                 // Recommended calculation: sizeref = 2. * max(array of size values) / (desired maximum marker size ** 2)
             }
         });
@@ -101,8 +101,8 @@ Plotly.d3.json(url, function (error, data) {
             label: years[i],
             args: [[years[i]], {
                 mode: 'immediate',
-                transition: { duration: 300 },
-                frame: { duration: 300, redraw: false },
+                transition: { duration: 800 },
+                frame: { duration: 800, redraw: false },
             }]
         });
     }
@@ -139,8 +139,8 @@ Plotly.d3.json(url, function (error, data) {
                 args: [null, {
                     mode: 'immediate',
                     fromcurrent: true,
-                    transition: { duration: 1000 },
-                    frame: { duration: 1000, redraw: false }
+                    transition: { duration: 1e9 },
+                    frame: { duration: 800, redraw: false }
                 }],
                 label: 'Play'
             }, {
@@ -185,12 +185,17 @@ Plotly.d3.json(url, function (error, data) {
         frames: frames,
     });
 
-
-
-
-    // toggleXAxis();
+    // Generate toggle log button
+    Plotly.d3.select('#toggle-btn')
+        .append('button')
+        .attr('type', 'button')
+        .classed('btn btn-danger btn-sm', true)
+        .attr('onclick', 'toggleXAxis()')
+        .text('Toggle Log of X Axis')
 })
 
+
+// Toggle log of x axis
 function toggleXAxis() {
     let $bubblePlot = Plotly.d3.select('#bubble-plot');
 
@@ -225,6 +230,7 @@ function toggleXAxis() {
             .classed('log-x-axis', true);
     }
 }
+
 
 // Test animating y axis
 function toggleTest() {

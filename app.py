@@ -48,10 +48,18 @@ def map_data():
     return jsonify(data)
 
 
-@app.route("/all-data")
-def all_data():
+@app.route("/honey-pest")
+def honey_pest():
 
     df = pd.read_csv("data/clean_data/honey_pest_1991_2017.csv", encoding='utf-8')
+
+    return jsonify(df.to_dict(orient="records"))
+
+
+@app.route("/honey-temp-pest")
+def honey_temp():
+
+    df = pd.read_csv("data/clean_data/honey_temp_pest_1991_2013.csv", encoding='utf-8')
 
     return jsonify(df.to_dict(orient="records"))
 
