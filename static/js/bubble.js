@@ -1,4 +1,4 @@
-let url = '/data'
+let url = '/all-data'
 
 Plotly.d3.json(url, function (error, data) {
     // Create a lookup table to sort and regroup the columns of data,
@@ -110,12 +110,12 @@ Plotly.d3.json(url, function (error, data) {
     let layout = {
         xaxis: {
             title: 'Total Production (lbs)',
-            // range: [-2000000, 50000000]
-            type: 'log'
+            range: [-2000000, 50000000]
+            // type: 'log'
         },
         yaxis: {
             title: 'Price per Pound ($)',
-            range: [-0.5, 4.5]
+            range: [-2, 8.5]
         },
         hovermode: 'closest',
         // We'll use updatemenus (whose functionality includes menus as
@@ -205,6 +205,49 @@ function toggleXAxis() {
         }
 
         Plotly.relayout('bubble-plot', update);
+
+        $bubblePlot
+            .classed('log-x-axis', false)
+            .classed('x-axis', true);
+    }
+    else {
+        let update = {
+            xaxis: {
+                title: 'Total Production (lbs)',
+                type: 'log'
+            }
+        }
+
+        Plotly.relayout('bubble-plot', update);
+
+        $bubblePlot
+            .classed('x-axis', false)
+            .classed('log-x-axis', true);
+    }
+}
+
+// Test animating y axis
+function toggleTest() {
+
+    let $bubblePlot = Plotly.d3.select('#bubble-plot');
+
+    let logClass = $bubblePlot.classed('log-x-axis');
+
+    if (logClass) {
+        Plotly.animate('bubble-plot', {
+            layout: {
+                xaxis: {
+                    range: [-2000000, 50000000],
+                    type: 'linear'
+                },
+            }
+        }, {
+                transition: {
+                    duration: 500,
+                    easing: 'elastic'
+                }
+            }
+        );
 
         $bubblePlot
             .classed('log-x-axis', false)

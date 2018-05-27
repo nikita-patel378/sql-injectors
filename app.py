@@ -48,5 +48,13 @@ def map_data():
     return jsonify(data)
 
 
+@app.route("/all-data")
+def all_data():
+
+    df = pd.read_csv("data/clean_data/honey_pest_1991_2017.csv", encoding='utf-8')
+
+    return jsonify(df.to_dict(orient="records"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
