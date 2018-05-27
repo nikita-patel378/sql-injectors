@@ -33,7 +33,7 @@ Plotly.d3.json(url, function (error, data) {
     for (let i = 0, ii = data.length; i < ii; i++) {
         let datum = data[i];
         let trace = getData(datum.year, datum.state);
-        trace.text.push(`State: ${datum.state_name}<br>Total Production: ${datum.totalprod} lbs<br>Price per Pound: $${datum.priceperlb}<br>Number of Colonies: ${datum.numcol}`);
+        trace.text.push(`State: ${datum.state_name}<br>Total Production: ${datum.totalprod} lbs<br>Price per Pound: $${datum.priceperlb}<br>Number of Colonies: ${datum.numcol}<br>Total Insecticide: ${datum.totalpest} kg`);
         trace.id.push(datum.state);
         trace.x.push(datum.totalprod);
         trace.y.push(datum.priceperlb);
@@ -115,7 +115,7 @@ Plotly.d3.json(url, function (error, data) {
         },
         yaxis: {
             title: 'Price per Pound ($)',
-            range: [-2, 8.5]
+            range: [-1.5, 8.5]
         },
         hovermode: 'closest',
         // We'll use updatemenus (whose functionality includes menus as

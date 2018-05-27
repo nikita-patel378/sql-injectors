@@ -33,7 +33,7 @@ Plotly.d3.json(url, function (error, data) {
     for (let i = 0, ii = data.length; i < ii; i++) {
         let datum = data[i];
         let trace = getData(datum.year, datum.state);
-        trace.text.push(`State: ${datum.state_name}<br>Number of Colonies: ${datum.numcol}<br>Price per Pound: $${datum.priceperlb}<br>Total Production: ${datum.totalprod} lbs`);
+        trace.text.push(`State: ${datum.state_name}<br>Number of Colonies: ${datum.numcol}<br>Price per Pound: $${datum.priceperlb}<br>Total Production: ${datum.totalprod} lbs<br>Total Insecticide: ${datum.totalpest} kg`);
         trace.id.push(datum.state);
         trace.x.push(datum.numcol);
         trace.y.push(datum.priceperlb);
