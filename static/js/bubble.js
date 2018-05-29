@@ -112,10 +112,8 @@ let url = '/honey-pest';
             xaxis: {
                 title: 'Total Production (lbs)',
                 range: [-2000000, 50000000]
-                // type: 'log'
             },
             yaxis: {
-                // title: 'Price per Pound ($)',
                 range: [-1.5, 8.5]
             },
             hovermode: 'closest',
