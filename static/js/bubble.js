@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 let url = '/sqldata'
+=======
+let url = '/data'
+>>>>>>> 751db7237673e853eb9a93eb2e13c7e3ac4d5e63
 
 Plotly.d3.json(url, function (error, data) {
     // Create a lookup table to sort and regroup the columns of data,
