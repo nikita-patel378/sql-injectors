@@ -13,3 +13,4 @@ pytz==2018.4
 six==1.11.0
 Werkzeug==0.14.1
 wincertstore==0.2
+Flask-SQLAlchemy==2.3.2SQLAlchemy==1.2.7
