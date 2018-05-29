@@ -8,6 +8,11 @@ body {
     background-color: transparent;
 }
 
+/* Make ytitles clickable */
+.ytitle {
+    pointer-events: all;
+}
+
 /* .slider-grip-rect {
     animation: myframes;
 }
