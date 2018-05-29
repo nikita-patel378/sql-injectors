@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import datetime as dt
 import numpy as np
-=======
-from flask import Flask, render_template, jsonify
-from flask_pymongo import PyMongo
->>>>>>> 751db7237673e853eb9a93eb2e13c7e3ac4d5e63
 import pandas as pd
 
 from flask import (
@@ -19,7 +14,6 @@ from flask import (
 #################################################
 app = Flask(__name__)
 
-<<<<<<< HEAD
 #################################################
 # Database Setup
 #################################################
@@ -85,10 +79,6 @@ def setup():
 
 ##########################################################
  ##############The Routes#################################
-=======
-mongo = PyMongo(app)
-
->>>>>>> 751db7237673e853eb9a93eb2e13c7e3ac4d5e63
 
 @app.route("/")
 def home():
@@ -116,11 +106,7 @@ def data():
 @app.route("/map-data")
 def map_data():
 
-<<<<<<< HEAD
     df = pd.read_sql_table("honeyproduction_withlatlon","sqlite:///data/raw_data/honeyproduction_withlatlon.sqlite")
-=======
-    df = pd.read_csv("data/raw_data/honeyproduction_withlatlon.csv", encoding='utf-8')
->>>>>>> 751db7237673e853eb9a93eb2e13c7e3ac4d5e63
     data = []
     for i, row in df.iterrows():
         data.append({
