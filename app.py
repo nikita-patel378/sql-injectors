@@ -1,8 +1,84 @@
-from flask import Flask, render_template, jsonify
+import datetime as dt
+import numpy as np
 import pandas as pd
 
+from flask import (
+    Flask,
+    render_template,
+    jsonify,
+    request,
+    redirect)
+
+#################################################
+# Flask Setup
+#################################################
 app = Flask(__name__)
 
+#################################################
+# Database Setup
+#################################################
+from flask_sqlalchemy import SQLAlchemy
+# The database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data/raw_data/honeyproduction.sqlite"
+
+db = SQLAlchemy(app)
+
+class HoneyProd(db.Model):
+    __tablename__ = 'honeyproduction'
+    id=db.Column(db.Integer, primary_key=True)
+    state = db.Column(db.String)
+    numcol = db.Column(db.String)
+    yieldpercol = db.Column(db.String)
+    totalprod = db.Column(db.String)
+    stocks = db.Column(db.String)
+    priceperlb= db.Column(db.String)
+    prodvalue = db.Column(db.String)
+    year = db.Column(db.String)
+
+    def __repr__(self):
+        return '<HoneyProd %r>' % (self.name)
+
+# Create database tables
+@app.before_first_request
+def setup():
+    # Recreate database each time for demo
+    #db.drop_all()
+    db.create_all()
+
+#now for the leaflet map
+from flask_sqlalchemy import SQLAlchemy
+# The database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data/raw_data/honeyproduction_withlatlon.sqlite"
+
+db = SQLAlchemy(app)
+
+class HoneyProdCoord(db.Model):
+    __tablename__ = 'honeyproduction_withlatlon'
+    id=db.Column(db.Integer, primary_key=True)
+    state = db.Column(db.String)
+    numcol = db.Column(db.String)
+    yieldpercol = db.Column(db.String)
+    totalprod = db.Column(db.String)
+    stocks = db.Column(db.String)
+    priceperlb= db.Column(db.String)
+    prodvalue = db.Column(db.String)
+    year = db.Column(db.String)
+    latitude=db.Column(db.String)
+    longitude=db.Column(db.String)
+    state_yr=db.Column(db.String)
+
+    def __repr__(self):
+        return '<HoneyProdCoord %r>' % (self.name)
+
+# Create database tables
+@app.before_first_request
+def setup():
+    # Recreate database each time for demo
+    #db.drop_all()
+    db.create_all()
+
+##########################################################
+ ##############The Routes#################################
 
 @app.route("/")
 def home():
@@ -22,58 +98,25 @@ def particles():
 @app.route("/data")
 def data():
 
-    df = pd.read_csv("data/raw_data/honeyproduction.csv", encoding='utf-8')
-
+    df = pd.read_sql_table("honeyproduction","sqlite:///data/raw_data/honeyproduction.sqlite")
+    
     return jsonify(df.to_dict(orient="records"))
 
 
-@app.route("/bubble-data")
-def bubble_data():
+@app.route("/map-data")
+def map_data():
 
-    # Read csv as df
-    honey_df = pd.read_csv("data/raw_data/honeyproduction.csv", encoding='utf-8')
-
-    # Sort by state then by year
-    honey_df = honey_df.sort_values(by=["state", "year"]).reset_index(drop=True)
-
-    # Initialize list of dictionaries
+    df = pd.read_sql_table("honeyproduction_withlatlon","sqlite:///data/raw_data/honeyproduction_withlatlon.sqlite")
     data = []
-
-    # Get list of unique states
-    states_list = honey_df["state"].unique()
-
-    for state in states_list:
-
-        init_dict = {}
-
-        init_dict["state"] = state
-
-        numcol = []
-        yieldpercol = []
-        totalprod = []
-        stocks = []
-        priceperlb = []
-        prodvalue = []
-
-        for i, row in honey_df.iterrows():
-
-            if state == row["state"]:
-
-                numcol.append([row["year"], row["numcol"]])
-                yieldpercol.append([row["year"], row["yieldpercol"]])
-                totalprod.append([row["year"], row["totalprod"]])
-                stocks.append([row["year"], row["stocks"]])
-                priceperlb.append([row["year"], row["priceperlb"]])
-                prodvalue.append([row["year"], row["prodvalue"]])
-
-        init_dict["numcol"] = numcol
-        init_dict["yieldpercol"] = yieldpercol
-        init_dict["totalprod"] = totalprod
-        init_dict["stocks"] = stocks
-        init_dict["priceperlb"] = priceperlb
-        init_dict["prodvalue"] = prodvalue
-
-        data.append(init_dict)
+    for i, row in df.iterrows():
+        data.append({
+            'state': row["state"],
+            'totalprod': row["totalprod"],
+            'year': row["year"],
+            'latitude': row["latitude"],
+            'longitude': row["longitude"],
+            'state_yr': row["state_yr"]
+        })
 
     return jsonify(data)
 

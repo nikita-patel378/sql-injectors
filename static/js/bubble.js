@@ -1,137 +1,227 @@
-let svgWidth = 960;
-let svgHeight = 500;
+let url = '/sqldata'
 
-let margin = {
-    top: 20,
-    right: 20,
-    bottom: 20,
-    left: 100
-};
-
-let chartWidth = svgWidth - margin.left - margin.right;
-let chartHeight = svgHeight - margin.top - margin.bottom;
-
-let $svg = d3.select('#plot')
-    .append('svg')
-    .attr('width', svgWidth)
-    .attr('height', svgHeight);
-
-let $chartGroup = $svg.append('g')
-    .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-// Various accessors that specify the four dimensions of data to visualize.
-function x(d) { return d.totalprod; }
-function y(d) { return d.priceperlb; }
-function radius(d) { return d.numcol; }
-function color(d) { return d.state; }
-function key(d) { return d.state; }
-
-let url = '/bubble-data';
-
-d3.json(url, (error, honeyData) => {
+Plotly.d3.json(url, function (error, data) {
+    // Create a lookup table to sort and regroup the columns of data,
+    // first by year, then by state:
     if (error) throw error;
 
-    console.log(honeyData);
+    // console.log(data);
 
-    let xTestExtent = d3.extent(honeyData, data => data.totalprod[1]),
-        xMax = xTestExtent[0][1],
-        xMin = xTestExtent[1][1];
+    let lookup = {};
 
-    let yTestExtent = d3.extent(honeyData, data => data.priceperlb[1]),
-        yMax = yTestExtent[1][1],
-        yMin = yTestExtent[0][1];
-
-    let rExtent = d3.extent(honeyData, data => data.numcol[1]),
-        rMax = rExtent[0][1],
-        rMin = rExtent[1][1];
-
-    console.log(rExtent);
-
-    // Create scale functions
-    let xLinearScale = d3.scaleLinear()
-        .domain([xMin, xMax])
-        .range([0, chartWidth]);
-
-    let yLinearScale = d3.scaleLinear()
-        .domain([yMin, yMax])
-        .range([chartHeight, 0]);
-
-    let radiusScale = d3.scaleSqrt().domain([rMin, rMax]).range([0, 40]),
-        colorScale = d3.scaleQuantize()
-            .domain([0, 44])
-            .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
-                "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
-
-    // Create axis functions
-    let bottomAxis = d3.axisBottom(xLinearScale);
-    let leftAxis = d3.axisLeft(yLinearScale);
-
-    // Generate axes groups
-    $chartGroup.append('g')
-        .attr('transform', `translate(0, ${chartHeight})`)
-        .attr('id', 'x-axis')
-        .call(bottomAxis);
-
-    $chartGroup.append('g')
-        .attr('id', 'y-axis')
-        .call(leftAxis);
-
-    // Break here for testing
-
-    // A bisector since many nation's data is sparsely-defined.
-    let bisect = d3.bisector(data => data[0]);
-
-    // Add a dot per nation. Initialize the data at 1998, and set the colors.
-    // Create a group for the circles
-    let $circleGroup = $chartGroup.append('g');
-
-    $circleGroup.selectAll('circle')
-        .data(insertData(1998))
-        .enter()
-        .append('circle')
-        .classed('state-circle', true)
-        .style('fill', 'blue')
-        // .style('fill', data => colorScale(color(data)))
-        .call(position);
-    // .sort(order);
-
-    // Interpolates the dataset for the given (fractional) year.
-    function insertData(year) {
-        return honeyData.map(function (d) {
-            return {
-                state: d.state,
-                totalprod: insertValues(d.totalprod, year),
-                priceperlb: insertValues(d.priceperlb, year),
-                numcol: insertValues(d.numcol, year)
+    function getData(year, state) {
+        let byYear, trace;
+        if (!(byYear = lookup[year])) {
+            ;
+            byYear = lookup[year] = {};
+        }
+        // If a container for this year + state doesn't exist yet,
+        // then create one:
+        if (!(trace = byYear[state])) {
+            trace = byYear[state] = {
+                x: [],
+                y: [],
+                id: [],
+                text: [],
+                marker: { size: [] }
             };
+        }
+        return trace;
+    }
+
+    // Go through each row, get the right trace, and append the data:
+    for (let i = 0, ii = data.length; i < ii; i++) {
+        let datum = data[i];
+        let trace = getData(datum.year, datum.state);
+        trace.text.push(`State: ${datum.state}<br>Total Production: ${datum.totalprod} lbs<br>Price per Pound: $${datum.priceperlb}<br>Number of Colonies: ${datum.numcol}`);
+        trace.id.push(datum.state);
+        trace.x.push(datum.totalprod);
+        trace.y.push(datum.priceperlb);
+        trace.marker.size.push(datum.numcol);
+    }
+
+    // Get the group names:
+    let years = Object.keys(lookup);
+
+    // In this case, every year includes every state, so we
+    // can just infer the states from the *first* year:
+    let firstYear = lookup[years[0]];
+    let states = Object.keys(firstYear);
+
+    // Create the main traces, one for each state:
+    let traces = [];
+
+    for (let i = 0, ii = states.length; i < ii; i++) {
+        let data = firstYear[states[i]];
+        // We're creating a single trace here, to which
+        // the frames will pass data for the different years. It's
+        // subtle, but to avoid data reference problems, we'll slice
+        // the arrays to ensure we never write any new data into our
+        // lookup table:
+        traces.push({
+            name: states[i],
+            x: data.x.slice(),
+            y: data.y.slice(),
+            id: data.id.slice(),
+            text: data.text.slice(),
+            mode: 'markers',
+            marker: {
+                size: data.marker.size.slice(),
+                sizemode: 'area',
+                sizeref: 50
+                // Recommended calculation: sizeref = 2. * max(array of size values) / (desired maximum marker size ** 2)
+            }
         });
     }
 
-    // Positions the dots based on data.
-    function position(circle) {
-        circle.attr("cx", function (d) { return xLinearScale(x(d)); })
-            .attr("cy", function (d) { return yLinearScale(y(d)); })
-            // .attr("r", function (d) { return radiusScale(radius(d)); })
-            .attr('r', 5);
+    // Create a frame for each year. Frames are effectively just
+    // traces, except they don't need to contain the *full* trace
+    // definition (for example, appearance). The frames just need
+    // the parts the traces that change (here, the data).
+    let frames = [];
+
+    for (let i = 0, ii = years.length; i < ii; i++) {
+        frames.push({
+            name: years[i],
+            data: states.map(function (state) {
+                return getData(years[i], state);
+            })
+        })
     }
 
-    // Defines a sort order so that the smallest dots are drawn on top.
-    function order(a, b) {
-        return radius(b) - radius(a);
+    // Now create slider steps, one for each frame. The slider
+    // executes a plotly.js API command (here, Plotly.animate).
+    // In this example, we'll animate to one of the named frames
+    // created in the above loop.
+    let sliderSteps = [];
+
+    for (i = 0, ii = years.length; i < ii; i++) {
+        sliderSteps.push({
+            method: 'animate',
+            label: years[i],
+            args: [[years[i]], {
+                mode: 'immediate',
+                transition: { duration: 300 },
+                frame: { duration: 300, redraw: false },
+            }]
+        });
     }
 
-    // Finds (and possibly interpolates) the value for the specified year.
-    function insertValues(values, year) {
-        let i = bisect.left(values, year, 0, values.length - 1),
-            a = values[i];
+    let layout = {
+        xaxis: {
+            title: 'Total Production (lbs)',
+            // range: [-2000000, 50000000]
+            type: 'log'
+        },
+        yaxis: {
+            title: 'Price per Pound ($)',
+            range: [-0.5, 4.5]
+        },
+        hovermode: 'closest',
+        // We'll use updatemenus (whose functionality includes menus as
+        // well as buttons) to create a play button and a pause button.
+        // The play button works by passing `null`, which indicates that
+        // Plotly should animate all frames. The pause button works by
+        // passing `[null]`, which indicates we'd like to interrupt any
+        // currently running animations with a new list of frames. Here
+        // The new list of frames is empty, so it halts the animation.
+        updatemenus: [{
+            x: 0,
+            y: 0,
+            yanchor: 'top',
+            xanchor: 'left',
+            showactive: false,
+            direction: 'left',
+            type: 'buttons',
+            pad: { t: 115, r: 10 },
+            buttons: [{
+                method: 'animate',
+                args: [null, {
+                    mode: 'immediate',
+                    fromcurrent: true,
+                    transition: { duration: 1000 },
+                    frame: { duration: 1000, redraw: false }
+                }],
+                label: 'Play'
+            }, {
+                method: 'animate',
+                args: [[null], {
+                    mode: 'immediate',
+                    transition: { duration: 0 },
+                    frame: { duration: 0, redraw: false }
+                }],
+                label: 'Pause'
+            }]
+        }],
+        // Finally, add the slider and use `pad` to position it
+        // nicely next to the buttons.
+        sliders: [{
+            pad: { l: 130, t: 55 },
+            currentvalue: {
+                visible: true,
+                prefix: 'Year:',
+                xanchor: 'right',
+                font: { size: 50, color: 'black' }
+            },
+            steps: sliderSteps
+        }],
+        height: 650,
+        margin: {
+            r: 120,
+            t: 100
+        },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: {
+            family: 'Oswald',
+            color: 'black'
+        }
+    };
 
-        // console.log(i);
-        // console.log(a);
-        // if (i > 0) {
-        //     let b = values[i - 1],
-        //         t = (year - a[0]) / (b[0] - a[0]);
-        //     return a[1] * (1 - t) + b[1] * t;
-        // }
-        return a[1];
+    // Create the plot:
+    Plotly.plot('bubble-plot', {
+        data: traces,
+        layout: layout,
+        frames: frames,
+    });
+
+
+
+
+    // toggleXAxis();
+})
+
+function toggleXAxis() {
+    let $bubblePlot = Plotly.d3.select('#bubble-plot');
+
+    let logClass = $bubblePlot.classed('log-x-axis');
+
+    if (logClass) {
+        let update = {
+            xaxis: {
+                title: 'Total Production (lbs)',
+                range: [-2000000, 50000000]
+            }
+        }
+
+        Plotly.relayout('bubble-plot', update);
+
+        $bubblePlot
+            .classed('log-x-axis', false)
+            .classed('x-axis', true);
     }
-});
+    else {
+        let update = {
+            xaxis: {
+                title: 'Total Production (lbs)',
+                type: 'log'
+            }
+        }
+
+        Plotly.relayout('bubble-plot', update);
+
+        $bubblePlot
+            .classed('x-axis', false)
+            .classed('log-x-axis', true);
+    }
+}
