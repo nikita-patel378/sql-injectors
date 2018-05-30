@@ -1,15 +1,10 @@
-import datetime as dt
-import numpy as np
 import pandas as pd
 import geojson
-import json
 
 from flask import (
     Flask,
     render_template,
-    jsonify,
-    request,
-    redirect)
+    jsonify)
 
 #################################################
 # Flask Setup
@@ -79,13 +74,16 @@ def setup():
 ##########################################################
  ##############The Routes#################################
 
+
 @app.route("/")
 def main():
     return render_template("index.html")
 
+
 @app.route("/index")
 def home():
     return render_template("index.html")
+
 
 @app.route("/bubble")
 def bubble():
