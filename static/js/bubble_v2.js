@@ -36,9 +36,9 @@ let url = '/honey-pest';
             let trace = getData(datum.year, datum.state);
             trace.text.push(`State: ${datum.state_name}<br>Total Production: ${datum.totalprod} lbs<br>Price per Pound: $${datum.priceperlb}<br>Number of Colonies: ${datum.numcol}<br>Total Insecticide: ${datum.totalpest} kg`);
             trace.id.push(datum.state);
-            trace.x.push(datum.totalprod);
+            trace.x.push(datum.numcol);
             trace.y.push(datum.priceperlb);
-            trace.marker.size.push(datum.numcol);
+            trace.marker.size.push(datum.totalprod);
         }
 
         // Get the group names:
@@ -69,7 +69,7 @@ let url = '/honey-pest';
                 marker: {
                     size: data.marker.size.slice(),
                     sizemode: 'area',
-                    sizeref: 80
+                    sizeref: 5000
                     // Recommended calculation: sizeref = 2 * Plotly.d3.max(array of size values) / (desired maximum marker size ** 2)
                 }
             });
@@ -110,8 +110,8 @@ let url = '/honey-pest';
 
         let layout = {
             xaxis: {
-                title: 'Total Production (lbs)',
-                range: [-2000000, 50000000]
+                title: 'Number of Colonies',
+                range: [-20000, 570000]
             },
             yaxis: {
                 range: [-1.5, 8.5]

@@ -7,3 +7,17 @@ body {
 #bubble-plot {
     background-color: transparent;
 }
+
+/* Make ytitles clickable */
+.ytitle {
+    pointer-events: all;
+}
+
+/* .slider-grip-rect {
+    animation: myframes;
+}
+
+@keyframes myframes {
+    from {}
+    to {}
+} */
