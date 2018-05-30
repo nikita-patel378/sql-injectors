@@ -20,16 +20,40 @@ body {
 #intro {
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 40%;
     padding: 0 20px;
     width: 100%;
     text-align: center;
     color: #FFC300;
 }
-
 h1 {
     text-transform: uppercase;
     font-size: 85px;
     font-weight: 700;
     letter-spacing: 0.015em;
+}
+.navbar {
+    background-color: black
+}
+.navbar-header {
+    font-family: "Montserrat", sans-serif;
+    color: #FFC300;
+    background-color: black
+}
+
+
+.navbar-nav li a:link {
+    font-family: "Montserrat", sans-serif;
+    color: #FFC300;
+    background-color: black
+}
+.navbar-nav li a:hover {
+    font-family: "Montserrat", sans-serif;
+    color: white;
+    background-color: black
+}
+.navbar-nav li a:active {
+    font-family: "Montserrat", sans-serif;
+    color: white;
+    background-color: black;
 }
