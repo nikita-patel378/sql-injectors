@@ -89,17 +89,6 @@ def main():
 def home():
     return render_template("index.html")
 
-@app.route("/bubble")
-def bubble():
-    return render_template("bubble.html")
-
-@app.route("/map")
-def map():
-    return render_template("map.html")
-
-@app.route("/colony")
-def colony():
-    return render_template("colony.html")
 
 @app.route("/bubble")
 def bubble():
@@ -137,8 +126,7 @@ def data():
 @app.route("/map-data")
 def map_data():
 
-    df = pd.read_sql_table("honeyproduction_withlatlon",
-                           "sqlite:///data/raw_data/honeyproduction_withlatlon.sqlite")
+    df = pd.read_csv("data/raw_data/honeyproduction_withlatlon.csv")
     data = []
     for i, row in df.iterrows():
         data.append({
@@ -154,23 +142,6 @@ def map_data():
         })
 
     return jsonify(data)
-
-@app.route("/temp-data1")
-def temp_data1():
-    path_to_file = 'data/raw_data/us-states.json'
-    temp_df = pd.read_csv("data/raw_data/honeyproduction_withlatlon.csv")
-
-    with open(path_to_file) as f:
-        json_data = geojson.load(f)
-    
-    for i in range(len(json_data['features'])):
-        # if condition for state is matched, insert max temperature
-        for j in range(len(temp_df['state_full'])):
-            if json_data['features'][i]['properties']['name'] == temp_df["state_full"][j]:
-                 json_data['features'][i]['properties']['temp_max_{}'.format(temp_df["year"][j])] = temp_df["temp_max"][j].round(2)
-
-    return jsonify(json_data)
-
 
 
 @app.route("/temp-data2")
