@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Bee Colonies</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static', filename='css/colony_styles.css')}}" />
 </head>
 
 <body>
@@ -79,7 +79,7 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/maps/modules/map.js"></script>
     <script src="https://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
-    <script src="hmLogic.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/hmLogic.js') }}"></script>
     <!-- <script src="https://code.highcharts.com/js/themes/dark-unica.js"></script> -->
 </body>
 
