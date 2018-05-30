@@ -24,11 +24,11 @@
     margin: 100px 0 0 0;
     border-left: 1px solid silver;
 }
-#info h2 {
+#info h1 {
     display: inline;
-    font-size: 13pt;
+    font-size: 20px;
 }
-#info .f32 .flag {
+#info {
     vertical-align: bottom !important;
 }
 #info h4 {
