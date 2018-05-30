@@ -94,6 +94,21 @@ def map():
 def colony():
     return render_template("colony.html")
 
+@app.route("/bubble")
+def bubble():
+    return render_template("bubble.html")
+
+
+@app.route("/map")
+def map():
+    return render_template("map.html")
+
+
+@app.route("/colony")
+def colony():
+    return render_template("colony.html")
+
+
 @app.route("/particles")
 def particles():
 
