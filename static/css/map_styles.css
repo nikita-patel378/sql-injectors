@@ -17,3 +17,18 @@ body,
   margin-right: 8px;
   opacity: 0.7;
 }
+
+/*.leaflet-popup-content-wrapper {
+   background : yellow;
+  color: green
+} */
+
+.popupCustom2 .leaflet-popup-content-wrapper {
+  background: rgb(47, 255, 75);
+  color: green;
+}
+
+.popupCustom1 .leaflet-popup-content-wrapper {
+  background: yellow;
+  color: rgb(255, 72, 0);
+}
