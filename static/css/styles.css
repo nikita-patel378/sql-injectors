@@ -46,9 +46,15 @@ h1 {
     background-color: black
 }
 .navbar-header a:active {
+<<<<<<< HEAD
     font-family: "Montserrat", sans-serif;
     color: white0;
     background-color: black
+=======
+font-family: "Montserrat", sans-serif;
+    color: white;
+    background-color: black;
+>>>>>>> 5e637ca34b28601ae061ef97d0963991df9f4430
 }
 .navbar-nav li a:link {
     font-family: "Montserrat", sans-serif;
