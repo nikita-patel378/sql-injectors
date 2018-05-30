@@ -87,10 +87,6 @@ def main():
 def home():
     return render_template("index.html")
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 338b48a6921dc867dbdfa23cf621c1cc2119b062
 @app.route("/bubble")
 def bubble():
     return render_template("bubble.html")
