@@ -35,21 +35,13 @@ h1 {
 .navbar {
     background-color: black
 }
-.navbar-header a:link {
+.navbar-header {
     font-family: "Montserrat", sans-serif;
     color: #FFC300;
     background-color: black
 }
-.navbar-header a:hover {
-    font-family: "Montserrat", sans-serif;
-    color: white;
-    background-color: black
-}
-.navbar-header a:active {
-font-family: "Montserrat", sans-serif;
-    color: white;
-    background-color: black;
-}
+
+
 .navbar-nav li a:link {
     font-family: "Montserrat", sans-serif;
     color: #FFC300;
