@@ -127,8 +127,8 @@ def map_data():
     data = []
     for i, row in df.iterrows():
         data.append({
-            'state': row["state"], 
-            'state_full': row["state_full"],             
+            'state': row["state"],
+            'state_full': row["state_full"],
             'totalprod': row["totalprod"],
             'year': row["year"],
             'latitude': row["latitude"],
@@ -149,23 +149,22 @@ def temp_data2():
     with open(path_to_file) as f:
         json_data = geojson.load(f)
 
-
     for i in range(len(json_data['features'])):
         # Create empty list to add the array of temp_max for years 1998-2012
         json_data['features'][i]['properties']['temperatures'] = []
 
         for j in range(len(temp_df['state_full'])):
-            #if condition for state is matched, insert max temperature
+            # if condition for state is matched, insert max temperature
             if json_data['features'][i]['properties']['name'] == temp_df["state_full"][j]:
                 #json_data['features'][i]['properties']['temperatures'] = []
-                json_data['features'][i]['properties']['temperatures'].append({'year': str(temp_df["year"][j]), 'temp_max': (temp_df["temp_max"][j])})
-                #json_data['features'][i]['properties']['temperatures'].append((temp_df["temp_max"][j]))         
+                json_data['features'][i]['properties']['temperatures'].append(
+                    {'year': str(temp_df["year"][j]), 'temp_max': (temp_df["temp_max"][j])})
+                # json_data['features'][i]['properties']['temperatures'].append((temp_df["temp_max"][j]))
                 # json_data['features'][i]['properties']['temperatures']['year'] = str(temp_df["year"][j])
                 # json_data['features'][i]['properties']['temp_max'] = str(temp_df["temp_max"][j])
-                #break
+                # break
 
     return jsonify(json_data)
-
 
 
 @app.route("/honey-pest")
