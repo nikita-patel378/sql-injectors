@@ -143,7 +143,7 @@ def map_data():
 
 @app.route("/temp-data2")
 def temp_data2():
-    path_to_file = 'data/raw_data/us-states.json'
+    path_to_file = 'static/json/us-states.json'
     temp_df = pd.read_csv("data/raw_data/honeyproduction_withlatlon.csv")
 
     with open(path_to_file) as f:
