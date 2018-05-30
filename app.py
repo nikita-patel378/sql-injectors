@@ -1,6 +1,8 @@
 import datetime as dt
 import numpy as np
 import pandas as pd
+import geojson
+import json
 
 from flask import (
     Flask,
@@ -85,6 +87,10 @@ def main():
 def home():
     return render_template("index.html")
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 338b48a6921dc867dbdfa23cf621c1cc2119b062
 @app.route("/bubble")
 def bubble():
     return render_template("bubble.html")
@@ -121,20 +127,49 @@ def data():
 @app.route("/map-data")
 def map_data():
 
-    df = pd.read_sql_table("honeyproduction_withlatlon",
-                           "sqlite:///data/raw_data/honeyproduction_withlatlon.sqlite")
+    df = pd.read_csv("data/raw_data/honeyproduction_withlatlon.csv")
     data = []
     for i, row in df.iterrows():
         data.append({
-            'state': row["state"],
+            'state': row["state"], 
+            'state_full': row["state_full"],             
             'totalprod': row["totalprod"],
             'year': row["year"],
             'latitude': row["latitude"],
             'longitude': row["longitude"],
-            'state_yr': row["state_yr"]
+            'state_yr': row["state_yr"],
+            'temp_max': row["temp_max"],
+            'temp_min': row["temp_min"]
         })
 
     return jsonify(data)
+
+
+@app.route("/temp-data2")
+def temp_data2():
+    path_to_file = 'data/raw_data/us-states.json'
+    temp_df = pd.read_csv("data/raw_data/honeyproduction_withlatlon.csv")
+
+    with open(path_to_file) as f:
+        json_data = geojson.load(f)
+
+
+    for i in range(len(json_data['features'])):
+        # Create empty list to add the array of temp_max for years 1998-2012
+        json_data['features'][i]['properties']['temperatures'] = []
+
+        for j in range(len(temp_df['state_full'])):
+            #if condition for state is matched, insert max temperature
+            if json_data['features'][i]['properties']['name'] == temp_df["state_full"][j]:
+                #json_data['features'][i]['properties']['temperatures'] = []
+                json_data['features'][i]['properties']['temperatures'].append({'year': str(temp_df["year"][j]), 'temp_max': (temp_df["temp_max"][j])})
+                #json_data['features'][i]['properties']['temperatures'].append((temp_df["temp_max"][j]))         
+                # json_data['features'][i]['properties']['temperatures']['year'] = str(temp_df["year"][j])
+                # json_data['features'][i]['properties']['temp_max'] = str(temp_df["temp_max"][j])
+                #break
+
+    return jsonify(json_data)
+
 
 
 @app.route("/honey-pest")

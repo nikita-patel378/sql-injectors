@@ -1,5 +1,5 @@
 # Honey Production
-The motivation behind this group project was to use data to create multiple visulizations in order answer a series questions surrounding honey production in the United States from 1998 to 2012.  What we hope to accomplish from this project was to be able to have users draw their own conclusions through the data visulizations presented on our webpage.
+The motivation behind this group project was to use data to create multiple visualizations in order answer a series questions surrounding honey production in the United States from 1998 to 2012.  What we hope to accomplish from this project was to be able to have users draw their own conclusions through the data visualizations presented on our webpage.
 
 ## Research Questions: 
 * How has honey production yield changed from 1998 to 2012 and how does that compare to the total use of pesticides per year?

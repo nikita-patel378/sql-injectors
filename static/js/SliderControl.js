@@ -1,4 +1,3 @@
-console.log("This is slider control");
 L.Control.SliderControl = L.Control.extend({
     options: {
         position: 'topright',
@@ -28,7 +27,7 @@ L.Control.SliderControl = L.Control.extend({
         if (options.isEpoch) {
             time = (new Date(parseInt(time))).toString(); // this is local time
         }
-        console.log(time.toString())
+        //console.log(time.toString())
         return time.toString().substr(options.startTimeIdx, options.startTimeIdx + options.timeStrLength);
     },
 
